@@ -67,7 +67,6 @@ export default function Tasks() {
       toast.error(err);
     }
   });
-  console.log(userId!==null , token!==null)
   useEffect(()=>{setLoader(getTodoTask?.isFetching)},[getTodoTask?.isFetching])
   const getInprogressTask = useQuery({
     queryKey: ["getInprogressTask"],

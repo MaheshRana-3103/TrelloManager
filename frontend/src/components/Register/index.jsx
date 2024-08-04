@@ -33,7 +33,6 @@ export default function Register() {
             if(response.status===200){
                 message=response?.data?.message;
                 toast.success(message);
-                console.log("come there")
                 navigate('/login');
             }
             else{
@@ -45,21 +44,17 @@ export default function Register() {
         onError:(err)=>{
             let message = response?.response?.data?.message;
             toast.error(err);
-            // console.log(err)
         }
         
     });
-    console.log(payload!=null , Object.keys(errors).length === 0)
     useEffect(()=>{
         setLoader(registerUser?.isFetching);
     },[registerUser?.isFetching])
 
     const handleSubmit = (values,errors,resetForm)=>{
         setError(errors);
-        console.log(values)
         const size = Object.keys(errors).length;
         if(size>0){
-            console.log(errors)
             toast.error("Please fix all the errors before submitting")
         }
         else{
@@ -103,9 +98,7 @@ export default function Register() {
           })
           .then(response => response.json())
           .then(data => {
-            console.log('Backend response:', data);
             var decode = jwtDecode(data.id_token)
-            console.log("Main info :", decode);
             const payload = {"first_name":decode.name,"last_name":'',"email":decode.email,"password":decode.sub};
             setPayload(payload);registerUser.refetch();
           })

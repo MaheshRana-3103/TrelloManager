@@ -2,8 +2,7 @@ import axios from "axios"
 
 export const registerApi = async (payload)=>{
     try{
-       const response = await axios.post('http://localhost:1000/api/v1/sign-in',payload);
-       console.log(response)
+       const response = await axios.post(`${process.env.BACKEND_URL}/api/v1/sign-in`,payload);
        return response;
     }
     catch(err){
@@ -14,7 +13,7 @@ export const registerApi = async (payload)=>{
 }
 export const googleRegisterApi = async (payload) => {
    try {
-       const response = await axios.post('http://localhost:1000/api/v1/auth/google', payload);
+       const response = await axios.post(`${process.env.BACKEND_URL}/api/v1/auth/google`, payload);
        return response;
    } catch (err) {
        console.log(err);

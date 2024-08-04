@@ -30,7 +30,6 @@ router.get('/all-tasks',authenticateToken,async (req,res)=>{
             options:{ sort :{ createdAt:-1}}
         });
         const allTasksData = allTask.tasks
-        console.log(allTasksData);
         res.status(200).json({"data":allTasksData});
     }
     catch(err){
@@ -117,7 +116,6 @@ router.put('/tasks/todo/:id',authenticateToken,async (req,res)=>{
 router.put('/tasks/inprogress/:id',authenticateToken,async (req,res)=>{
     try{
         const taskId = req.params.id;
-        console.log(taskId)
         await Task.findByIdAndUpdate(taskId,{todo:false,inProgress:true,completed:false})
         return res.status(200).json({"message":"Task status changed to in-progress"});
     }

@@ -50,14 +50,12 @@ export default function Login() {
     onError:(err)=>{
         let message = response?.response?.data?.message;
         toast.error(err);
-        // console.log(err)
     }
   });
 
   useEffect(()=>{
     setLoader(LoginUser?.isFetching);
   },[LoginUser?.isFetching])
-  console.log(LoginUser?.isFetching)
 
     
   const initialSchema = {
@@ -71,9 +69,7 @@ export default function Login() {
 
   const handleSubmit = (values,errors,resetForm)=>{
     setError(errors);
-    console.log(values)
     const size = Object.keys(errors).length;
-    console.log(size)
     if(size>0){
         console.log(errors)
         toast.error("Please fix all the errors before submitting")

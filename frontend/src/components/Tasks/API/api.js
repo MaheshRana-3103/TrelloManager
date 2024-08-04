@@ -12,8 +12,7 @@ export const addTaskApi = async (payload) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.post('http://localhost:1000/api/v2/create-task', payload, { headers });
-        console.log(response);
+        const response = await axios.post(`${process.env.BACKEND_URL}/api/v2/create-task`, payload, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -22,7 +21,6 @@ export const addTaskApi = async (payload) => {
 };
 
 export const getTodoTaskApi = async (userId) => {
-    console.log(userId)
     try {
         // Define headers
         const headers = {
@@ -32,7 +30,7 @@ export const getTodoTaskApi = async (userId) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.get('http://localhost:1000/api/v2/all-tasks', { headers });
+        const response = await axios.get(`${process.env.BACKEND_URL}/api/v2/all-tasks`, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -50,7 +48,7 @@ export const getInprogressTaskApi = async (userId) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.get('http://localhost:1000/api/v2/all-tasks/inprogress', { headers });
+        const response = await axios.get(`${process.env.BACKEND_URL}/api/v2/all-tasks/inprogress`, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -68,7 +66,7 @@ export const getCompletedTaskApi = async (userId) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.get('http://localhost:1000/api/v2/all-tasks/completed', { headers });
+        const response = await axios.get(`${process.env.BACKEND_URL}/api/v2/all-tasks/completed`, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -85,7 +83,7 @@ export const updateTaskApi = async (id,payload) => {
             'id': id
         };
 
-        const response = await axios.put(`http://localhost:1000/api/v2/update-task/${id}`,payload,   {headers});
+        const response = await axios.put(`${process.env.BACKEND_URL}/api/v2/update-task/${id}`,payload,   {headers});
         return response;
     } catch (err) {
         console.log(err);
@@ -101,7 +99,7 @@ export const deleteTaskApi = async (id,userId) => {
             'id': userId,
         };
 
-        const response = await axios.delete(`http://localhost:1000/api/v2/delete-task/${id}`,   {headers});
+        const response = await axios.delete(`${process.env.BACKEND_URL}/api/v2/delete-task/${id}`,   {headers});
         return response;
     } catch (err) {
         console.log(err);
@@ -117,9 +115,8 @@ export const updateTaskStatusApi = async (taskId, status) => {
             'Authorization': `Bearer ${token}`,
             'id': id
         };
-        console.log(headers)
 
-        const response = await axios.put(`http://localhost:1000/api/v2/tasks/${status}/${taskId}`, {}, { headers });
+        const response = await axios.put(`${process.env.BACKEND_URL}/api/v2/tasks/${status}/${taskId}`, {}, { headers });
         return response;
     } catch (err) {
         console.log(err);
