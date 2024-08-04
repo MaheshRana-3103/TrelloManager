@@ -6,9 +6,9 @@ const fetch = require('node-fetch');
 
 router.post('/auth/google', (req, res) => {
     const { code } = req.body;
-    const client_id = "712548217029-34pgq89lk08glignfsnbr3du4a0bbaib.apps.googleusercontent.com";
-    const client_secret = "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";
-    const redirect_uri = 'http://localhost:5173';
+    const client_id = process.env.CLIENT_ID;
+    const client_secret = process.env.CLIENT_SECRET;
+    const redirect_uri = process.env.CLIENT_URL;
     const grant_type = 'authorization_code';
     fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
