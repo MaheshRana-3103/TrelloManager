@@ -16,12 +16,12 @@ export default function AddTask({setAddTask,recallFunction}) {
 
   const addTask = useQuery({
     queryKey: ["addTask",payload],
-    queryFn: () => addTaskApi(payload),
+    queryFn: () => addTaskApi(payload,token,userId),
     refetchOnWindowFocus: false,
     refetchOnmount: false,
     refetchOnReconnect: false,
     retry: false,
-    enabled: payload!=null,
+    enabled: payload!=null && userId!==null && token!==null,
     onSuccess:(response)=>{
         let message = '';
         if(response.status===200){

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotepadIcon from '../../assets/white-notepad.png';
 import './style.css';
@@ -8,6 +8,7 @@ import Profile from '../Profile';
 import { getUserProfileApi } from './Api/api';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { ClipLoader } from 'react-spinners';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function Navbar() {
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
   const [userProfile,setUserProfile] = useState(null);
+  const [loader,setLoader] = useState(false);
 
   const getUserProfile = useQuery({
     queryKey: ["getUserProfile"],
@@ -41,6 +43,8 @@ export default function Navbar() {
         toast.error(err);
     }
   });
+
+  useEffect(()=>{setLoader(getUserProfile?.isFetching)},[getUserProfile?.isFetching])
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
@@ -81,7 +85,8 @@ export default function Navbar() {
             <button className='logout_btn' type='button' onClick={handleLogout}>
               Logout
             </button>
-            <Profile userProfile={userProfile}/>
+            {loader && <div><ClipLoader color={'#fff'}/></div>}
+            {!loader && <Profile userProfile={userProfile}/>}
           </div>
 
         )}

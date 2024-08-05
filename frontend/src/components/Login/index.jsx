@@ -12,8 +12,8 @@ import { useAtom } from 'jotai';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
-
 export default function Login() {
+  const URL= import.meta.env.VITE_BACKEND_URL
   const navigate= useNavigate();
   const [payload,setPayload] = useState(null);
   const [loader,setLoader] = useState('');
@@ -83,7 +83,7 @@ export default function Login() {
   const googleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => {
       // Send the authorization code to the backend server
-      fetch('http://localhost:1000/api/v3/auth/google', {
+      fetch(`${URL}/api/v3/auth/google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function Login() {
     },
     onError: () => {
       // Handle login errors here
-      console.error('Google login failed');
+      toast.error('Google login failed');
     },
     flow: 'auth-code',
 });

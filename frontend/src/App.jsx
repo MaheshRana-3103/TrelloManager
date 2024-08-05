@@ -11,13 +11,12 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { GoogleOAuthProvider } from '@react-oauth/google';
 function App() {
-
   return (
     <QueryProvider>
       <div><Toaster position="top-right"reverseOrder={false}/></div>
       <Router>
         <Navbar/>
-        <GoogleOAuthProvider clientId="712548217029-34pgq89lk08glignfsnbr3du4a0bbaib.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <Routes>
               <Route path='/sign-in' element={<Register/>}/>
               <Route path='/login' element={<Login/>}/>
@@ -25,7 +24,7 @@ function App() {
               <DndProvider backend={HTML5Backend}>
                 <Tasks />
               </DndProvider>
-              
+
               } />} />
           </Routes>
         </GoogleOAuthProvider>

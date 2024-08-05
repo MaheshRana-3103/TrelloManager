@@ -2,7 +2,7 @@ import axios from "axios";
 
 const token = localStorage.getItem('token');
 const id = localStorage.getItem('userId');
-export const addTaskApi = async (payload) => {
+export const addTaskApi = async (payload,token,userId) => {
     try {
         // Define headers
         const headers = {
@@ -12,7 +12,7 @@ export const addTaskApi = async (payload) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.post(`${process.env.BACKEND_URL}/api/v2/create-task`, payload, { headers });
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v2/create-task`, payload, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -20,7 +20,7 @@ export const addTaskApi = async (payload) => {
     }
 };
 
-export const getTodoTaskApi = async (userId) => {
+export const getTodoTaskApi = async (userId,token) => {
     try {
         // Define headers
         const headers = {
@@ -30,7 +30,7 @@ export const getTodoTaskApi = async (userId) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.get(`${process.env.BACKEND_URL}/api/v2/all-tasks`, { headers });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v2/all-tasks`, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -38,7 +38,7 @@ export const getTodoTaskApi = async (userId) => {
     }
 };
 
-export const getInprogressTaskApi = async (userId) => {
+export const getInprogressTaskApi = async (userId,token) => {
     try {
         // Define headers
         const headers = {
@@ -48,7 +48,7 @@ export const getInprogressTaskApi = async (userId) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.get(`${process.env.BACKEND_URL}/api/v2/all-tasks/inprogress`, { headers });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v2/all-tasks/inprogress`, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -56,7 +56,7 @@ export const getInprogressTaskApi = async (userId) => {
     }
 };
 
-export const getCompletedTaskApi = async (userId) => {
+export const getCompletedTaskApi = async (userId,token) => {
     try {
         // Define headers
         const headers = {
@@ -66,7 +66,7 @@ export const getCompletedTaskApi = async (userId) => {
         };
 
         // Make the POST request with headers
-        const response = await axios.get(`${process.env.BACKEND_URL}/api/v2/all-tasks/completed`, { headers });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v2/all-tasks/completed`, { headers });
         return response;
     } catch (err) {
         console.log(err);
@@ -83,7 +83,7 @@ export const updateTaskApi = async (id,payload) => {
             'id': id
         };
 
-        const response = await axios.put(`${process.env.BACKEND_URL}/api/v2/update-task/${id}`,payload,   {headers});
+        const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v2/update-task/${id}`,payload,   {headers});
         return response;
     } catch (err) {
         console.log(err);
@@ -99,7 +99,7 @@ export const deleteTaskApi = async (id,userId) => {
             'id': userId,
         };
 
-        const response = await axios.delete(`${process.env.BACKEND_URL}/api/v2/delete-task/${id}`,   {headers});
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/v2/delete-task/${id}`,   {headers});
         return response;
     } catch (err) {
         console.log(err);
@@ -116,7 +116,7 @@ export const updateTaskStatusApi = async (taskId, status) => {
             'id': id
         };
 
-        const response = await axios.put(`${process.env.BACKEND_URL}/api/v2/tasks/${status}/${taskId}`, {}, { headers });
+        const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v2/tasks/${status}/${taskId}`, {}, { headers });
         return response;
     } catch (err) {
         console.log(err);

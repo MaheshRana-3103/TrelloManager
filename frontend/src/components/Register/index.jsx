@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
-
+const URL = import.meta.env.VITE_BACKEND_URL
 export default function Register() {
     const navigate= useNavigate();
     const [payload,setPayload] = useState(null);
@@ -89,7 +89,7 @@ export default function Register() {
     const googleLogin = useGoogleLogin({
         onSuccess: (codeResponse) => {
           // Send the authorization code to the backend server
-          fetch('http://localhost:1000/api/v3/auth/google', {
+          fetch(`${URL}/api/v3/auth/google`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

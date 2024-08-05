@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import Task from './components/Task.component';
@@ -24,7 +24,9 @@ export default function Tasks() {
   const [inProgressItems, setInProgressItems] = useState([]);
   const [completedItems, setCompletedTodoItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loader,setLoader] = useState(false);
+  const [todoLoader,setTodoLoader] = useState(false);
+  const [inProgressLoader,setInProgressLoader] = useState(false);
+  const [completeLoader,setCompleteLoader] = useState(false);
   const [sorting,setSorting] = useState('Recent');
 
 
@@ -50,7 +52,7 @@ export default function Tasks() {
 
   const getTodoTask = useQuery({
     queryKey: ["getTodoTask"],
-    queryFn: () => getTodoTaskApi(userId),
+    queryFn: () => getTodoTaskApi(userId,token),
     refetchOnWindowFocus: false,
     refetchOnmount: false,
     refetchOnReconnect: false,
@@ -67,10 +69,10 @@ export default function Tasks() {
       toast.error(err);
     }
   });
-  useEffect(()=>{setLoader(getTodoTask?.isFetching)},[getTodoTask?.isFetching])
+  useEffect(()=>{setTodoLoader(getTodoTask?.isFetching)},[getTodoTask?.isFetching])
   const getInprogressTask = useQuery({
     queryKey: ["getInprogressTask"],
-    queryFn: () => getInprogressTaskApi(userId),
+    queryFn: () => getInprogressTaskApi(userId,token),
     refetchOnWindowFocus: false,
     refetchOnmount: false,
     refetchOnReconnect: false,
@@ -87,10 +89,10 @@ export default function Tasks() {
       toast.error(err);
     }
   });
-  useEffect(()=>{setLoader(getInprogressTask?.isFetching)},[getInprogressTask?.isFetching])
+  useEffect(()=>{setInProgressLoader(getInprogressTask?.isFetching)},[getInprogressTask?.isFetching])
   const getCompletedTask = useQuery({
     queryKey: ["getCompletedTask"],
-    queryFn: () => getCompletedTaskApi(userId),
+    queryFn: () => getCompletedTaskApi(userId,token),
     refetchOnWindowFocus: false,
     refetchOnmount: false,
     refetchOnReconnect: false,
@@ -107,7 +109,7 @@ export default function Tasks() {
       toast.error(err);
     }
   });
-  useEffect(()=>{setLoader(getCompletedTask?.isFetching)},[getCompletedTask?.isFetching])
+  useEffect(()=>{setCompleteLoader(getCompletedTask?.isFetching)},[getCompletedTask?.isFetching])
 
   const deleteTodoTask = useQuery({
     queryKey: ["getTodoTask", deletetaskId],
@@ -163,6 +165,7 @@ export default function Tasks() {
       });
   };
 
+
   return (
     <div className="main_container">
       <div style={{marginLeft:10}}>
@@ -205,8 +208,8 @@ export default function Tasks() {
             <span style={{ padding: 10 }}>TODO</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {loader && <Loader/>}
-            {!loader && (todoItems &&
+            {todoLoader && <Loader/>}
+            {!todoLoader && (todoItems &&
               todoItems.length > 0 ?
               (filterAndSortTasks(todoItems).map((task) => (
                 <Task
@@ -224,8 +227,8 @@ export default function Tasks() {
             <span style={{ padding: 10 }}>IN PROGRESS</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {loader && <Loader/>}
-            {!loader && (inProgressItems &&
+            {inProgressLoader && <Loader/>}
+            {!inProgressLoader && (inProgressItems &&
               inProgressItems.length > 0 ?
               (filterAndSortTasks(inProgressItems).map((task) => (
                 <Task
@@ -243,8 +246,8 @@ export default function Tasks() {
             <span style={{ padding: 10 }}>DONE</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {loader && <Loader/>}
-            {!loader && (completedItems &&
+            {completeLoader && <Loader/>}
+            {!completeLoader && (completedItems &&
               completedItems.length > 0?
               (filterAndSortTasks(completedItems).map((task) => (
                 <Task
