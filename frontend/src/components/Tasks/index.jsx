@@ -177,7 +177,7 @@ export default function Tasks() {
 
   return (
     <div className="main_container">
-      <div style={{marginLeft:10}}>
+      <div style={{ marginLeft: 10 }}>
         <button
           className="add_task_btn"
           style={{ cursor: "pointer" }}
@@ -187,8 +187,8 @@ export default function Tasks() {
         </button>
       </div>
       <div className="search_container">
-        <div style={{padding:10}}>
-          <span >Search: </span>
+        <div style={{ padding: 10 }}>
+          <span>Search: </span>
           <input
             className="search_input"
             type="text"
@@ -196,19 +196,19 @@ export default function Tasks() {
             onChange={(e) => setSearchQuery(e.target.value)}
           ></input>
         </div>
-        <div style={{padding:10}}>
-        <span>Sort By: </span>
-        <Select
-          size='small'
-          style={{width:100,height:30}}
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={sorting}
-          onChange={(e)=>setSorting(e.target.value)}
-        >
-          <MenuItem value={'Recent'}>Recent</MenuItem>
-          <MenuItem value={'Oldest'}>Oldest</MenuItem>
-        </Select>
+        <div style={{ padding: 10 }}>
+          <span>Sort By: </span>
+          <Select
+            size="small"
+            style={{ width: 100, height: 30 }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={sorting}
+            onChange={(e) => setSorting(e.target.value)}
+          >
+            <MenuItem value={"Recent"}>Recent</MenuItem>
+            <MenuItem value={"Oldest"}>Oldest</MenuItem>
+          </Select>
         </div>
       </div>
       <div className="task_container">
@@ -217,18 +217,21 @@ export default function Tasks() {
             <span style={{ padding: 10 }}>TODO</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {todoLoader && <Loader/>}
-            {!todoLoader && (todoItems &&
-              todoItems.length > 0 ?
-              (filterAndSortTasks(todoItems).map((task) => (
-                <Task
-                  key={task._id}
-                  task={{ ...task, status: 'TODO' }}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                  handleViewDetails={handleViewDetails}
-                />
-              ))):<>Please add some task...</>)}
+            {todoLoader && <Loader />}
+            {!todoLoader &&
+              (todoItems && todoItems.length > 0 ? (
+                filterAndSortTasks(todoItems).map((task) => (
+                  <Task
+                    key={task._id}
+                    task={{ ...task, status: "TODO" }}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    handleViewDetails={handleViewDetails}
+                  />
+                ))
+              ) : (
+                <>Please add some task...</>
+              ))}
           </div>
         </Column>
         <Column status="inprogress" updateTaskStatus={updateTaskStatus}>
@@ -236,18 +239,21 @@ export default function Tasks() {
             <span style={{ padding: 10 }}>IN PROGRESS</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {inProgressLoader && <Loader/>}
-            {!inProgressLoader && (inProgressItems &&
-              inProgressItems.length > 0 ?
-              (filterAndSortTasks(inProgressItems).map((task) => (
-                <Task
-                  key={task._id}
-                  task={{ ...task, status: 'IN_PROGRESS' }}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                  handleViewDetails={handleViewDetails}
-                />
-              ))):<>Please add some task inprogress...</>)}
+            {inProgressLoader && <Loader />}
+            {!inProgressLoader &&
+              (inProgressItems && inProgressItems.length > 0 ? (
+                filterAndSortTasks(inProgressItems).map((task) => (
+                  <Task
+                    key={task._id}
+                    task={{ ...task, status: "IN_PROGRESS" }}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    handleViewDetails={handleViewDetails}
+                  />
+                ))
+              ) : (
+                <>Please add some task inprogress...</>
+              ))}
           </div>
         </Column>
         <Column status="completed" updateTaskStatus={updateTaskStatus}>
@@ -255,24 +261,41 @@ export default function Tasks() {
             <span style={{ padding: 10 }}>DONE</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {completeLoader && <Loader/>}
-            {!completeLoader && (completedItems &&
-              completedItems.length > 0?
-              (filterAndSortTasks(completedItems).map((task) => (
-                <Task
-                  key={task._id}
-                  task={{ ...task, status: 'DONE' }}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                  handleViewDetails={handleViewDetails}
-                />
-              ))):<>Please complete some tasks..</>)}
+            {completeLoader && <Loader />}
+            {!completeLoader &&
+              (completedItems && completedItems.length > 0 ? (
+                filterAndSortTasks(completedItems).map((task) => (
+                  <Task
+                    key={task._id}
+                    task={{ ...task, status: "DONE" }}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                    handleViewDetails={handleViewDetails}
+                  />
+                ))
+              ) : (
+                <>Please complete some tasks..</>
+              ))}
           </div>
         </Column>
       </div>
-      {addTask && <AddTask setAddTask={setAddTask} recallFunction={getTodoTask} />}
-      {viewDetails && <ViewTask setViewDetails={setViewDetails} task={taskToEdit}/>}
-      {editTask && <EditTask task={taskToEdit} setEditTask={setEditTask} recallFunction={getTodoTask} />}
+      {addTask && (
+        <AddTask setAddTask={setAddTask} recallFunction={getTodoTask} />
+      )}
+      {viewDetails && (
+        <ViewTask setViewDetails={setViewDetails} task={taskToEdit} />
+      )}
+      {editTask && (
+        <EditTask
+          task={taskToEdit}
+          setEditTask={setEditTask}
+          recallFunction={() => {
+            getTodoTask.refetch();
+            getInprogressTask.refetch();
+            getCompletedTask.refetch();
+          }}
+        />
+      )}
     </div>
   );
 }

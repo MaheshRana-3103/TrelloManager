@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import { ClipLoader } from 'react-spinners';
 
 export default function EditTask({ task, setEditTask,recallFunction }) {
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [payload, setPayload] = useState(null);
@@ -20,7 +22,7 @@ export default function EditTask({ task, setEditTask,recallFunction }) {
 
   const updateTask = useQuery({
     queryKey: ["updateTask", payload],
-    queryFn: () => updateTaskApi(task._id,payload),
+    queryFn: () => updateTaskApi(userId,task._id,payload,token),
     refetchOnWindowFocus: false,
     refetchOnmount: false,
     refetchOnReconnect: false,
@@ -32,7 +34,7 @@ export default function EditTask({ task, setEditTask,recallFunction }) {
         message = response?.data?.message;
         toast.success(message);
         setEditTask(false);
-        recallFunction.refetch();
+        recallFunction();
       } else {
         message = response?.response?.data?.message;
         toast.error(message);

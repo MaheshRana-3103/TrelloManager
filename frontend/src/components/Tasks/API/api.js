@@ -73,7 +73,7 @@ export const getCompletedTaskApi = async (userId,token) => {
     }
 };
 
-export const updateTaskApi = async (id,payload) => {
+export const updateTaskApi = async (userId,id,payload,token) => {
     try {
         // Define headers
         const headers = {

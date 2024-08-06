@@ -36,7 +36,8 @@ export default function Navbar() {
         }
         else{
             message=response?.response?.data?.message;
-            toast.error(message);
+            handleLogout();
+            toast.error("Internal Server Error");
         }
     },
     onError:(err)=>{
