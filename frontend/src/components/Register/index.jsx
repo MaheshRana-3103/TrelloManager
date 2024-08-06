@@ -10,16 +10,16 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
-const URL = import.meta.env.VITE_BACKEND_URL
 export default function Register() {
-    const navigate= useNavigate();
-    const [payload,setPayload] = useState(null);
-    const [loader,setLoader] = useState('');
-    const [errors,setError] = useState({});
+  const URL = import.meta.env.VITE_BACKEND_URL
+  const navigate= useNavigate();
+  const [payload,setPayload] = useState(null);
+  const [loader,setLoader] = useState('');
+  const [errors,setError] = useState({});
     
 
 
-    const registerUser = useQuery({
+  const registerUser = useQuery({
         queryKey: ["registerUser",payload],
         queryFn: () => registerApi(payload),
         refetchOnWindowFocus: false,
