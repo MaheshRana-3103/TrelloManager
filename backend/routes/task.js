@@ -43,9 +43,16 @@ router.delete('/delete-task/:id',authenticateToken,async(req,res)=>{
     try{
         const {id} = req.params;
         const userId = req.headers.id;
-        await Task.findByIdAndDelete(id);
+        const response = await Task.findByIdAndDelete(id);
+
+        let status = '';
+        if(response.todo==true){status='todo';}
+        else if(response.inProgress==true){status='inProgress';}
+        else{status='complete';}
+
+        console.log(response);
         await User.findByIdAndUpdate(userId,{$pull:{tasks:id}});
-        res.status(200).json({"message" : "Task deleted successfully"});
+        res.status(200).json({"message" : "Task deleted successfully","status":status});
     }
     catch(err){
         console.error(err);

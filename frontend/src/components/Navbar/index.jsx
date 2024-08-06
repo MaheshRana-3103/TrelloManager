@@ -32,6 +32,7 @@ export default function Navbar() {
         let message = '';
         if(response.status===200){
           setUserProfile(response.data);
+          setIsAuthenticated(true);
         }
         else{
             message=response?.response?.data?.message;

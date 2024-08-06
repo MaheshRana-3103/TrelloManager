@@ -113,17 +113,26 @@ export default function Tasks() {
 
   const deleteTodoTask = useQuery({
     queryKey: ["getTodoTask", deletetaskId],
-    queryFn: () => deleteTaskApi(deletetaskId,userId),
+    queryFn: () => deleteTaskApi(deletetaskId,userId,token),
     refetchOnWindowFocus: false,
     refetchOnmount: false,
     refetchOnReconnect: false,
     retry: false,
-    enabled: deletetaskId !== null && userId !== null,
+    enabled: deletetaskId !== null && userId !== null && token !==null,
     onSuccess: (response) => {
       if (response.status === 200) {
         toast.success(response?.data?.message);
+        let taskStatus = response?.data?.status;
         setDeletetaskId(null);
-        getTodoTask.refetch();
+        if(taskStatus=="todo"){
+          getTodoTask.refetch();
+        }
+        else if(taskStatus=="inProgress"){
+          getInprogressTask.refetch();
+        }
+        else{
+          getCompletedTask.refetch();
+        }
       } else {
         toast.error(response?.response?.data?.message);
       }
@@ -147,9 +156,9 @@ export default function Tasks() {
     setTaskToEdit(task);
   }
  
-  const updateTaskStatus = (taskId, status) => {
+  const updateTaskStatus = (taskId, status,token) => {
     
-    updateTaskStatusApi(taskId, status)
+    updateTaskStatusApi(taskId, status,token)
       .then((response) => {
         if (response.status === 200) {
           toast.success(response?.data?.message);

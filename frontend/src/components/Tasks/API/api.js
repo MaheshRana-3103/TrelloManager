@@ -1,14 +1,13 @@
 import axios from "axios";
-
-const token = localStorage.getItem('token');
-const id = localStorage.getItem('userId');
+const userId = localStorage.getItem("userId");
+const token = localStorage.getItem("token");
 export const addTaskApi = async (payload,token,userId) => {
     try {
         // Define headers
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            'id': id
+            'id': userId
         };
 
         // Make the POST request with headers
@@ -80,7 +79,7 @@ export const updateTaskApi = async (id,payload) => {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            'id': id
+            'id': userId
         };
 
         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v2/update-task/${id}`,payload,   {headers});
@@ -90,7 +89,7 @@ export const updateTaskApi = async (id,payload) => {
         return err;
     }
 };
-export const deleteTaskApi = async (id,userId) => {
+export const deleteTaskApi = async (id,userId,token) => {
     try {
         // Define headers
         const headers = {
@@ -107,13 +106,13 @@ export const deleteTaskApi = async (id,userId) => {
     }
 };
 
-export const updateTaskStatusApi = async (taskId, status) => {
+export const updateTaskStatusApi = async (taskId, status,token) => {
     try {
         // Define headers
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            'id': id
+            'id': userId
         };
 
         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v2/tasks/${status}/${taskId}`, {}, { headers });

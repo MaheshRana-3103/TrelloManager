@@ -8,7 +8,7 @@ import axios from 'axios';
 const ProtectedRoute = ({ element }) => {
   const [isAuthenticated,setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const token = localStorage.getItem('token');
-  if(token == null){setIsAuthenticated(false);}
+  if(token === null){setIsAuthenticated(false);}
   else{setIsAuthenticated(true);}
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
