@@ -10,7 +10,11 @@ import { Toaster } from "react-hot-toast"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useEffect } from "react"
+import { useAtom } from "jotai"
+import { isAuthenticatedAtom } from "./store"
 function App() {
+  const [isAuthenticated,setIsAuthenticated]= useAtom(isAuthenticatedAtom);
   return (
     <QueryProvider>
       <div><Toaster position="top-right"reverseOrder={false}/></div>
@@ -20,7 +24,7 @@ function App() {
           <Routes>
               <Route path='/sign-in' element={<Register/>}/>
               <Route path='/login' element={<Login/>}/>
-              <Route path="/" element={<ProtectedRoute element={
+              <Route path="/" element={<ProtectedRoute  element={
               <DndProvider backend={HTML5Backend}>
                 <Tasks />
               </DndProvider>

@@ -14,7 +14,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const path = location.pathname;
   const active = path.includes('/sign-in');
-  const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
   const [userProfile,setUserProfile] = useState(null);
@@ -32,12 +31,10 @@ export default function Navbar() {
         let message = '';
         if(response.status===200){
           setUserProfile(response.data);
-          setIsAuthenticated(true);
         }
         else{
             message=response?.response?.data?.message;
-            handleLogout();
-            toast.error("Internal Server Error");
+            toast.error(message);
         }
     },
     onError:(err)=>{
@@ -50,7 +47,6 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    setIsAuthenticated(false);
     navigate('/login');
   };
 
@@ -72,7 +68,7 @@ export default function Navbar() {
         <img style={{ width: 30, height: 30, objectFit: 'cover' }} src={NotepadIcon} alt="notepad icon" />
       </div>
       <div style={{ width: 120, display: 'flex', gap: 28, paddingRight: 8 }}>
-        {!isAuthenticated && (
+        {!token && (
           <>
             <button className={`${!active ? 'active' : 'non_active'}`} onClick={handleLogin}>
               Login
@@ -82,7 +78,7 @@ export default function Navbar() {
             </button>
           </>
         )}
-        {isAuthenticated && (
+        {token && (
           <div className='profile'>
             <button className='logout_btn' type='button' onClick={handleLogout}>
               Logout
