@@ -70,6 +70,14 @@
 .goggle_btn > span{
     font-weight: 800;
 }
+.login_google_verification{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    color: #0e6cfd;
+    font-weight: 800;
+}
 @media (min-width: 768px) {
     .login_input_div_container{
         width: 500px;

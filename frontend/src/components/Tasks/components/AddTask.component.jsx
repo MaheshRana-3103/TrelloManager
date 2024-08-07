@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ClipLoader } from 'react-spinners';
 import { getUserProfileApi } from '../../Navbar/Api/api';
-export default function AddTask({setAddTask,recallFunction}) {
+export default function AddTask({setAddTask,recallFunction,getUserProfile}) {
   const [title,setTitle] = useState('');
   const [description,setDescription] = useState('');
   const [payload,setPayload] = useState(null);
@@ -42,29 +42,6 @@ export default function AddTask({setAddTask,recallFunction}) {
     }
     });
 
-    const getUserProfile = useQuery({
-        queryKey: ["getUserProfile"],
-        queryFn: () => getUserProfileApi(userId,token),
-        refetchOnWindowFocus: false,
-        refetchOnmount: false,
-        refetchOnReconnect: false,
-        retry: false,
-        enabled: false,
-        onSuccess:(response)=>{
-            let message = '';
-            if(response.status===200){
-              setUserProfile(response.data);
-            }
-            else{
-                message=response?.response?.data?.message;
-                toast.error(message);
-            }
-        },
-        onError:(err)=>{
-            let message = response?.response?.data?.message;
-            toast.error(err);
-        }
-      });
     
     useEffect(()=>{
         setLoader(addTask?.isFetching)

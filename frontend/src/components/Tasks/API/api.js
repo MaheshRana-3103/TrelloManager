@@ -107,6 +107,9 @@ export const deleteTaskApi = async (id,userId,token) => {
 };
 
 export const updateTaskStatusApi = async (taskId, status,token) => {
+    if(status=="TODO"){status='todo';}
+    else if(status=="IN_PROGRESS"){status='inprogress';}
+    else {status='completed';}
     try {
         // Define headers
         const headers = {

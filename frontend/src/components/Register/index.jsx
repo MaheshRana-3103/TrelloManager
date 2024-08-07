@@ -16,6 +16,7 @@ export default function Register() {
   const [payload,setPayload] = useState(null);
   const [loader,setLoader] = useState('');
   const [errors,setError] = useState({});
+  const [googleLoader,setGoogleLoader] = useState(false);
     
 
 
@@ -88,6 +89,7 @@ export default function Register() {
     
     const googleLogin = useGoogleLogin({
         onSuccess: (codeResponse) => {
+          setGoogleLoader(true);
           // Send the authorization code to the backend server
           fetch(`${URL}/api/v3/auth/google`, {
             method: 'POST',
@@ -98,16 +100,19 @@ export default function Register() {
           })
           .then(response => response.json())
           .then(data => {
+            setGoogleLoader(false);
             var decode = jwtDecode(data.id_token)
             const payload = {"first_name":decode.name,"last_name":'',"email":decode.email,"password":decode.sub};
             setPayload(payload);registerUser.refetch();
           })
           .catch(error => {
+            setGoogleLoader(false);
             console.error('Error:', error);
           });
         },
         onError: () => {
           // Handle login errors here
+          setGoogleLoader(false);
           console.error('Google login failed');
         },
         flow: 'auth-code',
@@ -174,12 +179,16 @@ export default function Register() {
                         />
                         {touched.confirm_password && errors.confirm_password && <p className='error_text'>{errors.confirm_password}</p>}
                     </div>
-                    {loader && <div style={{display:'flex',justifyContent:'center'}}><ClipLoader/></div>}
+                    {loader && <div className='login_google_verification'>
+                      Registering your id ...
+                      <ClipLoader/>
+                    </div>}
                     {!loader && <button type="button" className='btn' disabled={!isValid || !dirty}
                      style={{opacity:(!isValid || !dirty)?0.5:1}}
                      onClick={()=>handleSubmit(values,errors,resetForm)}>
                         Signup
                     </button>}
+                {googleLoader && <div className='login_google_verification'>Google verification is going on <ClipLoader/></div>}
                 <div className='google_sign_container'>
                     <span>Already have an account ? <a href='/login' className='redirect'>Login</a></span>
                     <button className='goggle_btn' type="button" onClick={googleLogin}>Signup with <span>Google</span></button>

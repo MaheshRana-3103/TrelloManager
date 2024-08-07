@@ -6,7 +6,7 @@ import "./style.css"
 const Task = ({ task, handleDelete, handleEdit ,handleViewDetails}) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'TASK',
-    item: { id: task._id, status: task.status },
+    item: { id: task._id, status: task.status},
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

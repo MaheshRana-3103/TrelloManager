@@ -10,6 +10,7 @@ import { deleteTaskApi, getCompletedTaskApi, getInprogressTaskApi, getTodoTaskAp
 import "./style.css"
 import Loader from '../Loader';
 import { MenuItem, Select } from '@mui/material';
+import { getUserProfileApi } from '../Navbar/Api/api';
 export default function Tasks() {
   const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
@@ -111,6 +112,30 @@ export default function Tasks() {
   });
   useEffect(()=>{setCompleteLoader(getCompletedTask?.isFetching)},[getCompletedTask?.isFetching])
 
+  const getUserProfile = useQuery({
+    queryKey: ["getUserProfile"],
+    queryFn: () => getUserProfileApi(userId,token),
+    refetchOnWindowFocus: false,
+    refetchOnmount: false,
+    refetchOnReconnect: false,
+    retry: false,
+    enabled: false,
+    onSuccess:(response)=>{
+        let message = '';
+        if(response.status===200){
+        //   setUserProfile(response.data);
+        }
+        else{
+            message=response?.response?.data?.message;
+            toast.error(message);
+        }
+    },
+    onError:(err)=>{
+        let message = response?.response?.data?.message;
+        toast.error(err);
+    }
+  });
+
   const deleteTodoTask = useQuery({
     queryKey: ["getTodoTask", deletetaskId],
     queryFn: () => deleteTaskApi(deletetaskId,userId,token),
@@ -133,6 +158,7 @@ export default function Tasks() {
         else{
           getCompletedTask.refetch();
         }
+        getUserProfile.refetch();
       } else {
         toast.error(response?.response?.data?.message);
       }
@@ -155,16 +181,27 @@ export default function Tasks() {
     setViewDetails(true);
     setTaskToEdit(task);
   }
+  const refetchingFunction = (sourceStatus,status)=>{
+
+    if (sourceStatus === 'TODO' || status === 'TODO') {
+      getTodoTask.refetch();
+    }
+    if (sourceStatus === 'IN_PROGRESS' || status === 'IN_PROGRESS') {
+      getInprogressTask.refetch();
+    }
+    if (sourceStatus === 'COMPLETED' || status === 'COMPLETED') {
+      getCompletedTask.refetch();
+    }
+  }
  
-  const updateTaskStatus = (taskId, status,token) => {
-    
+  const updateTaskStatus = (taskId,sourceStatus ,status,token) => {
+  
     updateTaskStatusApi(taskId, status,token)
       .then((response) => {
         if (response.status === 200) {
           toast.success(response?.data?.message);
-          getTodoTask.refetch();
-          getInprogressTask.refetch();
-          getCompletedTask.refetch();
+          refetchingFunction(sourceStatus,status)
+
         } else {
           toast.error(response?.response?.data?.message);
         }
@@ -212,7 +249,7 @@ export default function Tasks() {
         </div>
       </div>
       <div className="task_container">
-        <Column status="todo" updateTaskStatus={updateTaskStatus}>
+        <Column status="TODO" updateTaskStatus={updateTaskStatus}>
           <div className="task_title_div">
             <span style={{ padding: 10 }}>TODO</span>
           </div>
@@ -231,7 +268,7 @@ export default function Tasks() {
               ))):<>Please add some task...</>)}
           </div>
         </Column>
-        <Column status="inprogress" updateTaskStatus={updateTaskStatus}>
+        <Column status="IN_PROGRESS" updateTaskStatus={updateTaskStatus}>
           <div className="task_title_div">
             <span style={{ padding: 10 }}>IN PROGRESS</span>
           </div>
@@ -250,7 +287,7 @@ export default function Tasks() {
               ))):<>Please add some task inprogress...</>)}
           </div>
         </Column>
-        <Column status="completed" updateTaskStatus={updateTaskStatus}>
+        <Column status="COMPLETED" updateTaskStatus={updateTaskStatus}>
           <div className="task_title_div">
             <span style={{ padding: 10 }}>DONE</span>
           </div>
@@ -261,7 +298,7 @@ export default function Tasks() {
               (filterAndSortTasks(completedItems).map((task) => (
                 <Task
                   key={task._id}
-                  task={{ ...task, status: 'DONE' }}
+                  task={{ ...task, status: 'COMPLETED' }}
                   handleDelete={handleDelete}
                   handleEdit={handleEdit}
                   handleViewDetails={handleViewDetails}
@@ -270,7 +307,7 @@ export default function Tasks() {
           </div>
         </Column>
       </div>
-      {addTask && <AddTask setAddTask={setAddTask} recallFunction={getTodoTask} />}
+      {addTask && <AddTask setAddTask={setAddTask} recallFunction={getTodoTask} getUserProfile={getUserProfile} />}
       {viewDetails && <ViewTask setViewDetails={setViewDetails} task={taskToEdit}/>}
       {editTask && 
       <EditTask task={taskToEdit} setEditTask={setEditTask} 

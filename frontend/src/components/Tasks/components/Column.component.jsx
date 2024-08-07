@@ -6,7 +6,11 @@ const Column = ({ status, children, updateTaskStatus }) => {
   const token = localStorage.getItem('token')
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'TASK',
-    drop: (item) => updateTaskStatus(item.id, status,token),
+    drop: (item) => {
+      const sourceStatus = item.status;
+      updateTaskStatus(item.id,sourceStatus, status,token)
+
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),

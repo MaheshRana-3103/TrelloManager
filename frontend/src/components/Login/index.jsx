@@ -7,7 +7,6 @@ import { loginApi } from './API/api';
 import { useQuery } from '@tanstack/react-query';
 import { ClipLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
-import { isAuthenticatedAtom, userIdAtom } from '../../store';
 import { useAtom } from 'jotai';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -18,7 +17,7 @@ export default function Login() {
   const [payload,setPayload] = useState(null);
   const [loader,setLoader] = useState('');
   const [errors,setError] = useState({});
-  const [isAuthenticated,setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [googleLoader,setGoogleLoader] = useState(false);
   
 
 
@@ -38,7 +37,6 @@ export default function Login() {
             localStorage.setItem("token",token);
             localStorage.setItem("userId",userId);
             toast.success("Login successful");
-            setIsAuthenticated(true);
             navigate('/');
         }
         else{
@@ -83,6 +81,7 @@ export default function Login() {
   const googleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => {
       // Send the authorization code to the backend server
+      setGoogleLoader(true);
       fetch(`${URL}/api/v3/auth/google`, {
         method: 'POST',
         headers: {
@@ -94,14 +93,18 @@ export default function Login() {
       .then(data => {
         var decode = jwtDecode(data.id_token)
         const payload = {"email":decode.email,"password":decode.sub};
-        setPayload(payload);LoginUser.refetch();
+        setPayload(payload);
+        setGoogleLoader(false);
+        LoginUser.refetch();
       })
       .catch(error => {
+        setGoogleLoader(false);
         console.error('Error:', error);
       });
     },
     onError: () => {
       // Handle login errors here
+      setGoogleLoader(false);
       toast.error('Google login failed');
     },
     flow: 'auth-code',
@@ -140,12 +143,16 @@ export default function Login() {
                         />
                         {touched.password && errors.password && <p className='error_text'>{errors.password}</p>}
                     </div>
-                    {loader && <div style={{display:'flex',justifyContent:'center'}}><ClipLoader/></div>}
+                   {loader && <div className='login_google_verification'>
+                      Logging you in...
+                      <ClipLoader/>
+                    </div>}
                    {!loader && <button type="button" className='btn' disabled={!isValid || !dirty}
                      style={{opacity:(!isValid || !dirty)?0.5:1}}
                      onClick={()=>handleSubmit(values,errors,resetForm)}>
                         Login
                     </button>}
+                {googleLoader && <div className='login_google_verification'>Google verification is going on <ClipLoader/></div>}
                 <div className='google_login_container'>
                     <span>Don't have an account ? <a href="/sign-in" className='redirect'>Signup</a></span>
                     <button className='goggle_btn' type="button" onClick={googleLogin}>Login with <span>Google</span></button>
