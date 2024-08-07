@@ -79,3 +79,9 @@
     margin-top: 4px;
     font-size: 0.9rem;
 }
+
+@media (min-width: 768px) {
+    .input_div_container{
+        width: 500px;
+    }
+}

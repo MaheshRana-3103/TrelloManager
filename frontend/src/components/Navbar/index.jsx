@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotepadIcon from '../../assets/white-notepad.png';
 import './style.css';
-import { isAuthenticatedAtom, userIdAtom } from '../../store';
-import { useAtom } from 'jotai';
 import Profile from '../Profile';
 import { getUserProfileApi } from './Api/api';
 import { useQuery } from '@tanstack/react-query';

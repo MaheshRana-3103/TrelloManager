@@ -80,7 +80,7 @@ export default function AddTask({setAddTask,recallFunction}) {
         <div className='add_task_inner_container'>
             <div className='input_text_area_container'>
                 <div className='input_text_area_inner_container'>
-                    <h3>Edit Task </h3>
+                    <h3>Add Task </h3>
                     <div className='inside_container'>
                         <span className='insider_title'>Title </span>
                         <input className='input_task_style' type="text"value={title}

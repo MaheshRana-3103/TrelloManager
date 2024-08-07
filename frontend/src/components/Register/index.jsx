@@ -123,7 +123,7 @@ export default function Register() {
                     <h2 className='title_style' style={{width:'100%'}}>Signup</h2>
                 <div>
                 </div>
-                <div className='input_div_container' style={{width:500}}>
+                <div className='input_div_container'>
                     <div className='input_div' style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <Field
                         onChange={handleChange('first_name')}

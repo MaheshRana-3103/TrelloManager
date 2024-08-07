@@ -4,8 +4,6 @@ import "./style.css"
 
 export default function Profile({userProfile}) {
    const [open, setOpen] = useState(false);
-
-
     const toggleDrawer = (newOpen) => () => {
       setOpen(newOpen);
     };
