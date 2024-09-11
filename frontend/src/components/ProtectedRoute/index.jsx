@@ -4,8 +4,8 @@ import { Navigate } from 'react-router-dom';
 
 
 const ProtectedRoute = ({ element }) => {
-  const localStorageToken = localStorage.getItem('token');
-  return localStorageToken ? element : <Navigate to="/login" />;
+  const isAuthenticated = localStorage.getItem('token');
+  return isAuthenticated ? element : <Navigate to="/login" replace/>;
 };
 
 export default ProtectedRoute;

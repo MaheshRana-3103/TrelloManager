@@ -253,7 +253,7 @@ export default function Tasks() {
           <div className="task_title_div">
             <span style={{ padding: 10 }}>TODO</span>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className='task_inner_container'>
             {todoLoader && <Loader/>}
             {!todoLoader && (todoItems &&
               todoItems.length > 0 ?
@@ -272,7 +272,7 @@ export default function Tasks() {
           <div className="task_title_div">
             <span style={{ padding: 10 }}>IN PROGRESS</span>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className='task_inner_container'>
             {inProgressLoader && <Loader/>}
             {!inProgressLoader && (inProgressItems &&
               inProgressItems.length > 0 ?
@@ -291,7 +291,7 @@ export default function Tasks() {
           <div className="task_title_div">
             <span style={{ padding: 10 }}>DONE</span>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className='task_inner_container'>
             {completeLoader && <Loader/>}
             {!completeLoader && (completedItems &&
               completedItems.length > 0?

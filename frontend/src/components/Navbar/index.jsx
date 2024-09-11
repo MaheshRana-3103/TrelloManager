@@ -62,7 +62,7 @@ export default function Navbar() {
       display: 'flex', justifyContent: 'space-between',
       alignItems: 'center', position: 'sticky'
     }}>
-      <div style={{ padding: 8, width: '5%' }}>
+      <div style={{ padding: 8, width: '5%',cursor:'pointer' }} onClick={()=>(navigate('/'))}>
         <img style={{ width: 30, height: 30, objectFit: 'cover' }} src={NotepadIcon} alt="notepad icon" />
       </div>
       <div style={{ width: 120, display: 'flex', gap: 28, paddingRight: 8 }}>

@@ -28,7 +28,6 @@ function App() {
               <DndProvider backend={HTML5Backend}>
                 <Tasks />
               </DndProvider>
-
               } />} />
           </Routes>
         </GoogleOAuthProvider>

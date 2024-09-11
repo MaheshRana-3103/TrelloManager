@@ -53,11 +53,9 @@
 .task_inside_container{
     width: 33%;
     height: 70vh;
-    overflow: scroll;
+    overflow: hidden;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.02);
     border-radius: 6px;
-    /* display: flex; */
-    /* flex-direction: column; */
     padding: 10px;
 
 }
@@ -68,6 +66,16 @@
     font-weight: 700;
     padding: 10px 0px 10px;
     margin-bottom: 10px;
+    position:sticky;
+    top: 0px;
+}
+.task_inner_container{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height:90%;
+    overflow:scroll;
+
 }
 .task_description{
     font-size: 15px;
@@ -83,6 +91,7 @@
     padding: 10px;
     border-radius: 4px;
 }
+
 .btn_container{
     display: flex;
     justify-content: end;
